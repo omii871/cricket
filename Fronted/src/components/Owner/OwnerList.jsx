@@ -6,7 +6,7 @@ import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 
 const EditOwnerModal = ({ owner, onClose, onSave }) => {
-  const apiUrl = import.meta.env.VITE_API_URL;
+
 
   const [formData, setFormData] = useState({
     _id: owner._id,
@@ -101,7 +101,7 @@ const OwnerList = () => {
   const [selectedOwner, setSelectedOwner] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const apiUrl = import.meta.env.VITE_API_URL;
   const fetchOwnerData = async () => {
     try {
       console.log("Fetching owner data...");;

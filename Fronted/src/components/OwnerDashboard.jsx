@@ -77,23 +77,7 @@ const OwnerDashboard = () => {
 
     fetchOwnerData();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchBiddingPlayer = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:5000/api/biddingPlayer/getBiddingPlayer");
-  //       if (res.data && res.data.playerId) {
-  //         setBiddingPlayers([res.data.playerId]);
-  //       } else {
-  //         setBiddingPlayers([]);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching bidding player:", error);
-  //     }
-  //   };
-  //   fetchBiddingPlayer();
-  // }, []);
-
+  
   const getNextPlayer = () => {
     socket.emit("get-next-player");
   };

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const OwnerForm = () => {
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_API_URL;
-
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,6 +55,7 @@ const OwnerForm = () => {
     formDataWithFile.append("teamName", formData.teamName);
     formDataWithFile.append("file", file);
     formDataWithFile.append("password", formData.password);
+const apiUrl = import.meta.env.VITE_API_URL;
 
     try {
       const res = await axios.post(`${apiUrl}/api/ownerData`, formDataWithFile);
