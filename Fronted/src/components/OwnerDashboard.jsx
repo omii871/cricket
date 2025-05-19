@@ -512,274 +512,269 @@ const OwnerDashboard = () => {
   const allRounders = myTeam.filter(player => player.playerStyle === "All-Rounder");
 
   return (
-    <>
-      <div className='flex justify-between   p-1 '>
-        {/* Bidding Players */}
-        <div className="w-full ">
-          <div className="max-w-4xl mx-auto bg-gray-200 p-1 h-130    ">
-            <h2 className="font-serif text-2xl font-semibold text-center text-gray-700 mb-1">
-              Bidding Player
-            </h2>
-            <h2 className=" font-bold text-center  mb-1">
-              🔁 Current Category: {biddingPlayers[0]?.playerStyle || "Waiting..."}
-            </h2>
-            {biddingPlayers.length > 0 ? (
-              <ul className="space-y-0 rounded-2xl bg-white shadow-xl transition-transform duration-1000 ease-in-out hover:scale-101">
-                {biddingPlayers.map((player) => (
-                  <li
-                    key={player._id}
-                    className="p-2 border rounded-2xl shadow-md bg-gray-50 space-y-1"
-                  >
-                    <div className="flex flex-col items-center gap-4">
-                      <img
-                        src={player.fileUrl}
-                        alt={player.name}
-                        className="w-80 h-70 object-contain rounded-2xl border-2 border-gray-300 shadow-md"
-                      />
-                      <div className="grid grid-cols-2 gap-x-4 text-gray-800 w-full text-center">
-                        <div><strong>Name:</strong> {player.name}</div>
-                        <div><strong>Age:</strong> {player.age}</div>
-                        <div><strong>Player Style:</strong> {player.playerStyle || "Not Specified"}</div>
-                        <div className=" ">
-                          <strong>Bid Prize:</strong> &nbsp;
-                          <input
-                            type="text"
-                            placeholder="₹0"
-                            className="w-20 text-center border-2 border-blue-500 rounded-lg text-gray-800 "
-                            value={bids[player._id] || ""}
-                            readOnly
-                          />
-                        </div>
+  <>
+    <div className='flex flex-col lg:flex-row justify-between gap-2 p-1'>
+      {/* Bidding Players */}
+      <div className="w-full lg:w-2/3">
+        <div className="max-w-4xl mx-auto bg-gray-200 p-1 h-[32.5rem]">
+          <h2 className="font-serif text-2xl font-semibold text-center text-gray-700 mb-1">
+            Bidding Player
+          </h2>
+          <h2 className="font-bold text-center mb-1">
+            🔁 Current Category: {biddingPlayers[0]?.playerStyle || "Waiting..."}
+          </h2>
+          {biddingPlayers.length > 0 ? (
+            <ul className="space-y-0 rounded-2xl bg-white shadow-xl transition-transform duration-1000 ease-in-out hover:scale-101">
+              {biddingPlayers.map((player) => (
+                <li
+                  key={player._id}
+                  className="p-2 border rounded-2xl shadow-md bg-gray-50 space-y-1"
+                >
+                  <div className="flex flex-col items-center gap-4">
+                    <img
+                      src={player.fileUrl}
+                      alt={player.name}
+                      className="w-40 md:w-80 h-40 md:h-70 object-contain rounded-2xl border-2 border-gray-300 shadow-md"
+                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-gray-800 w-full text-center">
+                      <div><strong>Name:</strong> {player.name}</div>
+                      <div><strong>Age:</strong> {player.age}</div>
+                      <div><strong>Player Style:</strong> {player.playerStyle || "Not Specified"}</div>
+                      <div className="">
+                        <strong>Bid Prize:</strong> &nbsp;
+                        <input
+                          type="text"
+                          placeholder="₹0"
+                          className="w-20 text-center border-2 border-blue-500 rounded-lg text-gray-800"
+                          value={bids[player._id] || ""}
+                          readOnly
+                        />
                       </div>
                     </div>
+                  </div>
 
-
-                    <div className="h-10 flex justify-center items-center transition-all duration-300">
-                      {recentBidder && (
-                        <div className="text-md font-medium text-blue-800 bg-blue-100 px-4 rounded-full shadow">
-                          🗣️ {recentBidder.ownerName} placed a bid of ₹{recentBidder.amount}
-                        </div>
-                      )}
-                      {initialTimerActive && (
-                        <div className="text-md font-semibold text-green-700 bg-green-100 px-4 py-1 rounded-full shadow ml-4">
-                          ⏳ Bidding Starting : {initialTimer} sec
-                        </div>
-                      )}
-                    </div>
-
-                    {!initialTimerActive && timeLeft > 0 && (
-                      <div className=" flex justify-center">
-                        <div className="text-lg font-semibold text-red-600 bg-yellow-100 px-6 py-1  rounded-full shadow">
-                          ⏱️ Timer: {timeLeft} sec
-                        </div>
+                  <div className="h-10 flex justify-center items-center transition-all duration-300">
+                    {recentBidder && (
+                      <div className="text-sm md:text-md font-medium text-blue-800 bg-blue-100 px-2 md:px-4 rounded-full shadow">
+                        🗣️ {recentBidder.ownerName} placed a bid of ₹{recentBidder.amount}
                       </div>
                     )}
-
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="flex items-center justify-center h-full py-8">
-                <p className="text-gray-500 text-lg">No Player Added to Bidding</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="w-full flex flex-col gap-1 bg-gray-200 p-2  h-[32.5rem]">
-          {/*  Sold Players */}
-          <div className="bg-green-50 rounded-md p-2 shadow overflow-y-auto flex-1">
-            <h3 className="text-xl font-bold mb-2 text-green-800 text-center">📦 Sold Players</h3>
-            {soldPlayers.length > 0 ? (
-              <ul className="space-y-2">
-                {soldPlayers.map(player =>
-                  player ? (
-                    <li key={player._id} className="p-2 border rounded-md bg-green-100 text-sm">
-                      ✅ {player.name} - {player.playerStyle}
-                      🧑‍💼 <span className="font-semibold">Owner:</span> {player.ownerName}
-                    </li>
-                  ) : null
-                )}
-              </ul>
-            ) : (<p className="text-center text-gray-600">No players sold yet.</p>
-            )}
-          </div>
-
-          {/* 🚫 Unsold Players */}
-          <div className="bg-red-50 rounded-md p-2 shadow overflow-y-auto flex-1 ">
-            <h3 className="text-xl font-bold mb-1 text-red-800 text-center">🚫 Unsold Players</h3>
-            {unsoldPlayers.length > 0 ? (
-              <ul className="space-y-2">
-
-                {unsoldPlayers.map(player =>
-                  player ? (
-                    <li key={player._id} className="p-2 border rounded-md bg-red-100 text-sm">
-                      ❌ {player.name} - {player.playerStyle}
-                    </li>
-                  ) : null
-                )}
-
-              </ul>
-            ) : (
-              <p className="text-center text-gray-600">No unsold players at the moment.</p>
-            )}
-          </div>
-
-          {/* 🔜 Upcoming Player */}
-          <div className="bg-yellow-50 rounded-md p-2 shadow overflow-y-auto flex-1">
-            <h3 className="text-xl font-bold mb-1 text-yellow-700 text-center">🔜 Upcoming Player</h3>
-            {upcomingPlayer ? (
-              <div className="p-1 border rounded-md bg-yellow-100 shadow-sm  ">
-                <div className="flex flex-row items-center gap-2">
-                  <img
-                    src={upcomingPlayer.fileUrl}
-                    alt="Upcoming Player"
-                    className="w-26 h-26 rounded-lg object-cover border-2 border-yellow-300 "
-                  />
-                  <div>
-                    <p><strong>Name:</strong> {upcomingPlayer.name}</p>
-                    <p><strong>Age:</strong> {upcomingPlayer.age}</p>
-                    <p><strong>Style:</strong> {upcomingPlayer.playerStyle}</p>
+                    {initialTimerActive && (
+                      <div className="text-sm md:text-md font-semibold text-green-700 bg-green-100 px-2 md:px-4 py-1 rounded-full shadow ml-2 md:ml-4">
+                        ⏳ Bidding Starting : {initialTimer} sec
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-            ) : (
-              <p className="text-center text-gray-600">Sabhi players ka auction complete ho chuka hai.</p>
-            )}
-          </div>
-        </div>
 
-
-      </div >
-
-      {/* Owners  */}
-      <div className='flex justify-between  gap-2'>
-
-        {/* Logged in Owner */}
-
-        <div className="w-full max-w-xs p-4 bg-blue-100 rounded-2xl shadow-xl ">
-          <h2 className="text-center text-2xl font-bold text-gray-800 mb-4">You</h2>
-
-          {currentOwner ? (
-            <div className="flex flex-col items-center text-center space-y-4">
-              <img
-                src={currentOwner.fileUrl}
-                alt={currentOwner.name}
-                className="w-28 h-28 rounded-full border-4 border-yellow-400 shadow-md object-cover"
-              />
-              <div className="space-y-1 text-gray-700">
-                <p><span className="font-semibold">Name:</span> {currentOwner.name}</p>
-                <p><span className="font-semibold">Team:</span> {currentOwner.teamName}</p>
-                <p><span className="font-semibold">Points:</span> ₹{currentOwner.points}</p>
-              </div>
-
-              <div className="flex w-full">
-                <input
-                  type="text"
-                  placeholder="₹0.00"
-                  className="flex-1 px-4 py-1 border border-gray-300 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) =>
-                    setOwnerBids((prev) => ({
-                      ...prev,
-                      [currentOwner._id]: e.target.value,
-                    }))
-                  }
-                  value={ownerBids[currentOwner._id] || ""}
-                />
-                <button
-                  onClick={() =>
-                    handleOwnerBid(
-                      currentOwner,
-                      biddingPlayers[0]?._id,
-                      ownerBids[currentOwner._id]
-                    )
-                  }
-                  className="px-4 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition"
-                >
-                  Send
-                </button>
-              </div>
-            </div>
+                  {!initialTimerActive && timeLeft > 0 && (
+                    <div className="flex justify-center">
+                      <div className="text-md font-semibold text-red-600 bg-yellow-100 px-4 py-1 rounded-full shadow">
+                        ⏱️ Timer: {timeLeft} sec
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
           ) : (
-            <p className="text-center text-red-500">Logged-in owner not found</p>
+            <div className="flex items-center justify-center h-full py-8">
+              <p className="text-gray-500 text-lg">No Player Added to Bidding</p>
+            </div>
           )}
-        </div>
-
-        {/* Categories (Batsman, Bowler, All-Rounder) */}
-        <div className="flex w-1/1 justify-between gap-2">
-          {/* Batsman Section */}
-          <div className="w-1/3 bg-blue-100 rounded-lg shadow-md p-4 ">
-            <h2 className="text-2xl font-bold text-center text-blue-800 mb-3">Batsman</h2>
-            <ul className="space-y-1.5 h-80 pr-1 overflow-y-auto">
-              {batsmen.length > 0 ? (
-                batsmen.map((player, index) => (
-                  <li key={index} className="bg-white p-2 rounded-md shadow text-gray-800">
-                    {player.playerName} - ₹{player.bidAmount}
-                  </li>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No Batsman added</p>
-              )}
-            </ul>
-          </div>
-
-          <div className="w-1/3 bg-blue-100 rounded-lg shadow-md p-4">
-            <h2 className="text-2xl font-bold text-center text-blue-800 mb-3">Bowler</h2>
-            <ul className="space-y-1.5 h-80 pr-1 overflow-y-auto">
-              {bowlers.length > 0 ? (
-                bowlers.map((player, index) => (
-                  <li key={index} className="bg-white p-2 rounded-md shadow text-gray-800">
-                    {player.playerName} - ₹{player.bidAmount}
-                  </li>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No Bowler added</p>
-              )}
-            </ul>
-          </div>
-
-          <div className="w-1/3 bg-blue-100 rounded-lg shadow-md p-2 ">
-            <h2 className="text-2xl font-bold text-center text-blue-800 mb-3">All-Rounder</h2>
-            <ul className="space-y-1.5 h-80 pr-1 overflow-y-auto">
-              {allRounders.length > 0 ? (
-                allRounders.map((player, index) => (
-                  <li key={index} className="bg-white p-2 rounded-md shadow text-gray-800">
-                    {player.playerName} - ₹{player.bidAmount}
-                  </li>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No All-Rounder added</p>
-              )}
-            </ul>
-          </div>
-        </div>
-
-        {/* Other Owners */}
-        <div className="p-4  bg-blue-100 rounded-lg w-1/4">
-          <h2 className="text-xl font-semibold text-center mb-1">All Other Owners</h2>
-          <div className="h-85 pr-1 overflow-y-auto space-y-2">
-            {otherOwners.map((owner, index) => (
-              <div key={index} className="p-2 bg-white rounded-md shadow-md flex items-center gap-2">
-                <img
-                  src={owner.fileUrl}
-                  alt={owner.name}
-                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-300"
-                />
-                <div>
-                  <div className="font-semibold">{owner.name}</div>
-                  <div className="text-gray-600"><strong>Team: </strong>{owner.teamName}</div>
-                  <div className="text-sm text-gray-700"><strong>Points: ₹</strong>{owner.points}</div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
+      {/* Right Sidebar - Sold, Unsold, Upcoming */}
+      <div className="w-full lg:w-1/3 flex flex-col gap-1 bg-gray-200 p-2 h-[32.5rem]">
+        {/* Sold Players */}
+        <div className="bg-green-50 rounded-md p-2 shadow overflow-y-auto flex-1">
+          <h3 className="text-xl font-bold mb-2 text-green-800 text-center">📦 Sold Players</h3>
+          {soldPlayers.length > 0 ? (
+            <ul className="space-y-2">
+              {soldPlayers.map(player =>
+                player ? (
+                  <li key={player._id} className="p-2 border rounded-md bg-green-100 text-sm">
+                    ✅ {player.name} - {player.playerStyle}
+                    🧑‍💼 <span className="font-semibold">Owner:</span> {player.ownerName}
+                  </li>
+                ) : null
+              )}
+            </ul>
+          ) : (
+            <p className="text-center text-gray-600">No players sold yet.</p>
+          )}
+        </div>
 
-      <ToastContainer position='top-center' autoClose={3000} />
-    </>
-  );
+        {/* Unsold Players */}
+        <div className="bg-red-50 rounded-md p-2 shadow overflow-y-auto flex-1">
+          <h3 className="text-xl font-bold mb-1 text-red-800 text-center">🚫 Unsold Players</h3>
+          {unsoldPlayers.length > 0 ? (
+            <ul className="space-y-2">
+              {unsoldPlayers.map(player =>
+                player ? (
+                  <li key={player._id} className="p-2 border rounded-md bg-red-100 text-sm">
+                    ❌ {player.name} - {player.playerStyle}
+                  </li>
+                ) : null
+              )}
+            </ul>
+          ) : (
+            <p className="text-center text-gray-600">No unsold players at the moment.</p>
+          )}
+        </div>
+
+        {/* Upcoming Player */}
+        <div className="bg-yellow-50 rounded-md p-2 shadow overflow-y-auto flex-1">
+          <h3 className="text-xl font-bold mb-1 text-yellow-700 text-center">🔜 Upcoming Player</h3>
+          {upcomingPlayer ? (
+            <div className="p-1 border rounded-md bg-yellow-100 shadow-sm">
+              <div className="flex flex-row items-center gap-2">
+                <img
+                  src={upcomingPlayer.fileUrl}
+                  alt="Upcoming Player"
+                  className="w-20 h-20 md:w-26 md:h-26 rounded-lg object-cover border-2 border-yellow-300"
+                />
+                <div className="text-sm">
+                  <p><strong>Name:</strong> {upcomingPlayer.name}</p>
+                  <p><strong>Age:</strong> {upcomingPlayer.age}</p>
+                  <p><strong>Style:</strong> {upcomingPlayer.playerStyle}</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className="text-center text-gray-600">Sabhi players ka auction complete ho chuka hai.</p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom Section - Owners and Categories */}
+    <div className='flex flex-col lg:flex-row justify-between gap-2 mt-2'>
+
+      {/* Logged in Owner */}
+      <div className="w-full lg:w-1/4 p-2 md:p-4 bg-blue-100 rounded-2xl shadow-xl">
+        <h2 className="text-center text-xl md:text-2xl font-bold text-gray-800 mb-2 md:mb-4">You</h2>
+        {currentOwner ? (
+          <div className="flex flex-col items-center text-center space-y-2 md:space-y-4">
+            <img
+              src={currentOwner.fileUrl}
+              alt={currentOwner.name}
+              className="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-yellow-400 shadow-md object-cover"
+            />
+            <div className="space-y-1 text-sm md:text-base text-gray-700">
+              <p><span className="font-semibold">Name:</span> {currentOwner.name}</p>
+              <p><span className="font-semibold">Team:</span> {currentOwner.teamName}</p>
+              <p><span className="font-semibold">Points:</span> ₹{currentOwner.points}</p>
+            </div>
+
+            <div className="flex w-full">
+              <input
+                type="text"
+                placeholder="₹0.00"
+                className="flex-1 px-2 md:px-4 py-1 text-sm md:text-base border border-gray-300 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) =>
+                  setOwnerBids((prev) => ({
+                    ...prev,
+                    [currentOwner._id]: e.target.value,
+                  }))
+                }
+                value={ownerBids[currentOwner._id] || ""}
+              />
+              <button
+                onClick={() =>
+                  handleOwnerBid(
+                    currentOwner,
+                    biddingPlayers[0]?._id,
+                    ownerBids[currentOwner._id]
+                  )
+                }
+                className="px-2 md:px-4 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition text-sm md:text-base"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-center text-red-500">Logged-in owner not found</p>
+        )}
+      </div>
+
+      {/* Categories (Batsman, Bowler, All-Rounder) */}
+      <div className="w-full lg:w-2/4 flex flex-col sm:flex-row justify-between gap-2">
+        {/* Batsman Section */}
+        <div className="w-full sm:w-1/3 bg-blue-100 rounded-lg shadow-md p-2 md:p-4">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-blue-800 mb-2 md:mb-3">Batsman</h2>
+          <ul className="space-y-1.5 h-60 md:h-80 pr-1 overflow-y-auto">
+            {batsmen.length > 0 ? (
+              batsmen.map((player, index) => (
+                <li key={index} className="bg-white p-1 md:p-2 rounded-md shadow text-sm md:text-base text-gray-800">
+                  {player.playerName} - ₹{player.bidAmount}
+                </li>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No Batsman added</p>
+            )}
+          </ul>
+        </div>
+
+        {/* Bowler Section */}
+        <div className="w-full sm:w-1/3 bg-blue-100 rounded-lg shadow-md p-2 md:p-4">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-blue-800 mb-2 md:mb-3">Bowler</h2>
+          <ul className="space-y-1.5 h-60 md:h-80 pr-1 overflow-y-auto">
+            {bowlers.length > 0 ? (
+              bowlers.map((player, index) => (
+                <li key={index} className="bg-white p-1 md:p-2 rounded-md shadow text-sm md:text-base text-gray-800">
+                  {player.playerName} - ₹{player.bidAmount}
+                </li>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No Bowler added</p>
+            )}
+          </ul>
+        </div>
+
+        {/* All-Rounder Section */}
+        <div className="w-full sm:w-1/3 bg-blue-100 rounded-lg shadow-md p-2 md:p-4">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-blue-800 mb-2 md:mb-3">All-Rounder</h2>
+          <ul className="space-y-1.5 h-60 md:h-80 pr-1 overflow-y-auto">
+            {allRounders.length > 0 ? (
+              allRounders.map((player, index) => (
+                <li key={index} className="bg-white p-1 md:p-2 rounded-md shadow text-sm md:text-base text-gray-800">
+                  {player.playerName} - ₹{player.bidAmount}
+                </li>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No All-Rounder added</p>
+            )}
+          </ul>
+        </div>
+      </div>
+
+      {/* Other Owners */}
+      <div className="w-full lg:w-1/4 p-2 md:p-4 bg-blue-100 rounded-lg">
+        <h2 className="text-lg md:text-xl font-semibold text-center mb-1">All Other Owners</h2>
+        <div className="h-60 md:h-85 pr-1 overflow-y-auto space-y-2">
+          {otherOwners.map((owner, index) => (
+            <div key={index} className="p-1 md:p-2 bg-white rounded-md shadow-md flex items-center gap-2">
+              <img
+                src={owner.fileUrl}
+                alt={owner.name}
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border-2 border-blue-300"
+              />
+              <div className="text-xs md:text-sm">
+                <div className="font-semibold">{owner.name}</div>
+                <div className="text-gray-600"><strong>Team: </strong>{owner.teamName}</div>
+                <div className="text-gray-700"><strong>Points: ₹</strong>{owner.points}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <ToastContainer position='top-center' autoClose={3000} />
+  </>
+);
   
 }
 export default OwnerDashboard;
