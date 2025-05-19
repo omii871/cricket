@@ -4,9 +4,10 @@ const AllTeams = () => {
     const [teams, setTeams] = useState([]);
     const [expandedTeamIndex, setExpandedTeamIndex] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/team")
+        fetch(`${apiUrl}/api/team`)
             .then((response) => response.json())
             .then((data) => {
                 setTeams(data.teams || []);

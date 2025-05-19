@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import io from "socket.io-client";
-const socket = io("http://localhost:5000");
 
 const OwnerDashboard = () => {
   const [formData, setFormData] = useState([]);
@@ -27,12 +26,15 @@ const OwnerDashboard = () => {
   const [myTeam, setMyTeam] = useState([]);
   const [currentOwner, setCurrentOwner] = useState(null);
   const [highestBids, setHighestBids] = useState({});
-
+  
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  const socket = io(apiUrl);
   const biddingPlayersRef = useRef([]);
   const biddingActiveRef = useRef(false);
   const timerRef = useRef(null);
   const isFirstRender = useRef(true);
-
+  
   const ownerId = localStorage.getItem('ownerId');
   const loggedInOwner = ownerData.find(owner => owner._id === ownerId);
   const otherOwners = ownerData.filter(owner => owner._id !== ownerId);
@@ -40,7 +42,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/formData');
+        const response = await axios.get(`${apiUrl}/api/formData`);
         setFormData(response.data);
         setFilteredPlayers(response.data);
       } catch (err) {
@@ -53,7 +55,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     const fetchOwnerData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/ownerData");
+        const res = await axios.get(`${apiUrl}/api/ownerData`);
         if (!Array.isArray(res.data)) {
           console.error("Expected an array but got:", res.data);
           return;
@@ -389,7 +391,7 @@ const OwnerDashboard = () => {
         finalBidResult.playerStyle = 'Batsman';
       }
       try {
-        await axios.post("http://localhost:5000/api/team/addPlayer", finalBidResult);
+        await axios.post(`${apiUrl}/api/team/addPlayer`, finalBidResult);
         toast.success("Player successfully added to the owner's team!");
       } catch (error) {
         console.error(" Error adding player to team:", error);
@@ -426,7 +428,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     const fetchBiddingPlayer = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/biddingPlayer/getBiddingPlayer");
+        const res = await axios.get(`${apiUrl}/api/biddingPlayer/getBiddingPlayer`);
         if (res.data && res.data.playerId) {
           setBiddingPlayers([res.data.playerId]);
           setBiddingActive(true);
@@ -445,7 +447,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     const fetchUpcomingInitially = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/formData");
+        const res = await axios.get(`${apiUrl}/api/formData`);
         setFilteredPlayers(res.data);
         if (res.data.length > 1) {
           setUpcomingPlayer(res.data[0]);
@@ -504,7 +506,7 @@ const OwnerDashboard = () => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:5000/api/team/${currentOwnerId}`);
+        const res = await axios.get(`${apiUrl}/api/team/${currentOwnerId}`);
 
         if (!res.data || !Array.isArray(res.data.players)) {
           console.error("Unexpected response for team data:", res.data);

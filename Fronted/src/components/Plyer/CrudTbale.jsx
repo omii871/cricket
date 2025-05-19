@@ -3,16 +3,16 @@ import { FaDownload, FaEdit, FaTrash } from 'react-icons/fa'; // Import icons
 import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 import axios from 'axios';
-
 const CrudTable = () => {
   const [formData, setFormData] = useState([]);
   const [editingData, setEditingData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/formData');
+        const response = await axios.get(`${apiUrl}/api/formData`);
         setFormData(response.data);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -98,7 +98,7 @@ const CrudTable = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/formData/${id}`);
+      await axios.delete(`${apiUrl}/api/formData/${id}`);
       setFormData(formData.filter((item) => item._id !== id)); 
     } catch (err) {
       console.error('Error deleting data:', err);
@@ -113,7 +113,7 @@ const CrudTable = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/formData/${editingData._id}`, editingData);
+      await axios.put(`${apiUrl}/api/formData/${editingData._id}`, editingData);
       setFormData(formData.map(item => item._id === editingData._id ? editingData : item));
       setModalOpen(false);
     } catch (err) {

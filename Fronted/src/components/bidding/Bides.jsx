@@ -4,9 +4,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 import io from "socket.io-client";
-const socket = io("http://localhost:5000");
 const Bides = () => {
-
+  
   const [formData, setFormData] = useState([]);
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [selectedStyle, setSelectedStyle] = useState("All");
@@ -35,6 +34,9 @@ const Bides = () => {
   const isHandlingNextPlayerRef = useRef(false);
   const currentPlayerIndexRef = useRef(0);
   const [upcomingPlayer, setUpcomingPlayer] = useState(null);
+  
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const socket = io(apiUrl);
 
   useEffect(() => {
     biddingActiveRef.current = biddingActive;
@@ -51,7 +53,7 @@ const Bides = () => {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/formData');
+        const response = await axios.get(`${apiUrl}/api/formData`);
         setFormData(response.data);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -69,7 +71,7 @@ const Bides = () => {
   useEffect(() => {
     const fetchOwnerData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/ownerData");
+        const res = await axios.get(`${apiUrl}/api/ownerData`);
         if (res.data && Array.isArray(res.data)) {
           setOwnerData(res.data);
         }
@@ -381,7 +383,7 @@ const Bides = () => {
     const addPlayerToTeam = async () => {
       if (!finalBidResult) return;
       try {
-        await axios.post("http://localhost:5000/api/team/addPlayer", finalBidResult);
+        await axios.post(`${apiUrl}/api/team/addPlayer`, finalBidResult);
         toast.success("Player successfully added to the owner's team!");
       } catch (error) {
         console.error("Error adding player to team:", error);
@@ -403,7 +405,7 @@ const Bides = () => {
       const nextPlayer = filteredPlayersRef.current[nextIndex];
 
       if (nextPlayer) {
-        await axios.post("http://localhost:5000/api/biddingPlayer/setBiddingPlayer", {
+        await axios.post(`${apiUrl}/api/biddingPlayer/setBiddingPlayer`, {
           playerId: nextPlayer._id
         });
 
@@ -421,7 +423,7 @@ const Bides = () => {
       } else {
         setBiddingPlayers([]);
         setBiddingActive(false);
-        await axios.post("http://localhost:5000/api/biddingPlayer/setBiddingPlayer", {});
+        await axios.post(`${apiUrl}/api/biddingPlayer/setBiddingPlayer`, {});
         socket.emit("clear-bidding-player");
       }
     } catch (err) {
@@ -451,7 +453,7 @@ const Bides = () => {
   useEffect(() => {
   const fetchCurrentBiddingPlayer = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/biddingPlayer/getBiddingPlayer");
+      const res = await axios.get(`${apiUrl}/api/biddingPlayer/getBiddingPlayer`);
       const currentPlayerId = res.data?.playerId;
 
       if (currentPlayerId && formData.length > 0) {
@@ -492,7 +494,7 @@ const Bides = () => {
 
                     try {
 
-                      await axios.post("http://localhost:5000/api/biddingPlayer/setBiddingPlayer", {
+                      await axios.post(`${apiUrl}/api/biddingPlayer/setBiddingPlayer`, {
                         playerId: currentPlayer._id,
                       });
 
@@ -503,7 +505,7 @@ const Bides = () => {
                         socket.emit("upcoming-player", upcoming);
                       }
 
-                      const res = await axios.get("http://localhost:5000/api/biddingPlayer/getBiddingPlayer");
+                      const res = await axios.get(`${apiUrl}/api/biddingPlayer/getBiddingPlayer`);
                       if (res.data && res.data.playerId) {
                         setBiddingPlayers([res.data.playerId]);
                         setBiddingActive(false);

@@ -7,6 +7,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +65,7 @@ function Login() {
     if (!validateForm()) return;
   
     try {
-      const res = await axios.post('http://localhost:5000/api/ownerData/login', {
+      const res = await axios.post(`${apiUrl}/api/ownerData/login`, {
         email: formData.email,
         password: formData.password,
       });

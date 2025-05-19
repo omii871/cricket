@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const OwnerForm = () => {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,7 +59,7 @@ const OwnerForm = () => {
     formDataWithFile.append("password", formData.password);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ownerData", formDataWithFile);
+      const res = await axios.post(`${apiUrl}/api/ownerData`, formDataWithFile);
       console.log("Registration successful:", res.data);
 
       // const loginRes = await axios.post("http://localhost:5000/api/ownerData/login", {

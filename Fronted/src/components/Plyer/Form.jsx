@@ -9,6 +9,7 @@ const Form = () => {
   const [shirtNumber, setShirtNumber] = useState('');
   const [file, setFile] = useState('');
   const [playerStyle, setPlayerStyle] = useState('');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const validateFullName = (name) => {
     const nameParts = name.trim().split(' ');
@@ -34,7 +35,7 @@ const Form = () => {
 
     if (file) formData.append('file', file);
     try {
-      await axios.post('http://localhost:5000/api/formData', formData, {
+      await axios.post(`${apiUrl}/api/formData`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -6,6 +6,8 @@ import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 
 const EditOwnerModal = ({ owner, onClose, onSave }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     _id: owner._id,
     name: owner.name,
@@ -104,7 +106,7 @@ const OwnerList = () => {
     try {
       console.log("Fetching owner data...");;
       
-      const response = await axios.get('http://localhost:5000/api/ownerData');
+      const response = await axios.get(`${apiUrl}/api/ownerData`);
       console.log('Fetched Owners:', response.data);
       setOwners(response.data);
       setLoading(false);
@@ -131,7 +133,7 @@ const OwnerList = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/ownerData/${updatedOwner._id}`,
+        `${apiUrl}/api/ownerData/${updatedOwner._id}`,
         updatedOwner
       );
 
@@ -151,7 +153,7 @@ const OwnerList = () => {
 
   const handleDelete = async (ownerId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/ownerData/${ownerId}`);
+      await axios.delete(`${apiUrl}/api/ownerData/${ownerId}`);
       setOwners(owners.filter(owner => owner._id !== ownerId));
     } catch (error) {
       console.error('Error deleting owner:', error);
